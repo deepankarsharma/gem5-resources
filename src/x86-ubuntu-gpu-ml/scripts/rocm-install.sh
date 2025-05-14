@@ -57,17 +57,17 @@ sudo mkdir --parents --mode=0755 /etc/apt/keyrings
 wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | \
         gpg --dearmor | sudo tee /etc/apt/keyrings/rocm.gpg > /dev/null
 
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/6.1/ubuntu jammy main" \
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/6.3.4/ubuntu jammy main" \
         | sudo tee /etc/apt/sources.list.d/amdgpu.list
 
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/rocm/apt/6.1 jammy main" \
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/rocm/apt/6.3.4 jammy main" \
         | sudo tee --append /etc/apt/sources.list.d/rocm.list
 echo -e 'Package: *\nPin: release o=repo.radeon.com\nPin-Priority: 600' \
         | sudo tee /etc/apt/preferences.d/rocm-pin-600
 sudo apt update
 
 sudo apt -y install amdgpu-dkms
-sudo apt -y install rocm
+sudo apt -y install rocm rocwmma-dev
 sudo apt -y install cmake
 
 # Make directory for GPU BIOS. These are placed in /root for compatibility with
@@ -83,12 +83,12 @@ sudo chmod 777 /root/roms
 # Package: Pip
 # Language: Python
 # Compute Platfrom: ROCm 6.0 (Note: Latest ROCm when this file was last modified)
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.0
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.3
 
 # See https://pypi.org/project/tensorflow-rocm/#description
 # Datasets are also installed as gem5 has no internet connection.
-pip install tensorflow-rocm==2.14.0.600
-pip install tensorflow-datasets==4.9.4
+#pip install tensorflow-rocm==2.14.0.600
+#pip install tensorflow-datasets==4.9.4
 
 
 # Setup gem5 auto login.
